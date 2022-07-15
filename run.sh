@@ -15,7 +15,6 @@ usage(){
       deploy            deploy microshift cluster
   Environment variables:
       deploy
-                        CLUSTER_NAME (Required) microshift cluster name.
 EOF
 }
 

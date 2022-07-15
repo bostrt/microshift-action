@@ -11,5 +11,3 @@ runs:
     - id: main
       shell: bash
       run: ${{ github.action_path }}/run.sh deploy
-      env:
-        CLUSTER_NAME: ${{ inputs.cluster-name }}

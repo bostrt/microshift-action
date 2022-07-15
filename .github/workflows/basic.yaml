@@ -1,10 +1,10 @@
-name: Default microshift cluster
+name: Default MicroShift cluster
 
 on:
   [workflow_dispatch, push]
 jobs:
   microshift-cluster-demo:
-    name: Default microshift cluster
+    name: Default MicroShift cluster
     runs-on: ubuntu-22.04
     steps:
       - uses: actions/checkout@v2
@@ -12,6 +12,7 @@ jobs:
         if: env.ACT == 'true'
         run: apt update && apt install sudo gnupg -y
       - uses: ./
-        name: "Create default microshift Cluster"
-        with:
-          cluster-name: "test-cluster-1"
+        name: "Create default MicroShift Cluster"
+      - name: Cluster info
+        run: |
+          kubectl cluster-info 
