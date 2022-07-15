@@ -1,0 +1,14 @@
+name: Default microshift cluster
+
+on:
+  [workflow_dispatch, push]
+jobs:
+  microshift-cluster-demo:
+    name: Default microshift cluster
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v2
+      - uses: ./
+        name: "Create single k3d Cluster"
+        with:
+          cluster-name: "test-cluster-1"

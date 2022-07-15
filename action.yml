@@ -1,0 +1,15 @@
+name: bostrt/microshift-action
+description: "A GitHub Action to run a microshift all-in-one cluster."
+author: bostrt
+inputs:
+  cluster-name:
+    description: "(Required) Cluster name."
+    required: true
+runs:
+  using: composite
+  steps:
+    - id: main
+      shell: bash
+      run: ${{ github.action_path }}/run.sh deploy
+      env:
+        CLUSTER_NAME: ${{ inputs.cluster-name }}
