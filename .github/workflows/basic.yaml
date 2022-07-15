@@ -5,10 +5,13 @@ on:
 jobs:
   microshift-cluster-demo:
     name: Default microshift cluster
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     steps:
       - uses: actions/checkout@v2
+      - name: Install sudo package
+        if: env.ACT == 'true'
+        run: apt update && apt install sudo gnupg -y
       - uses: ./
-        name: "Create single k3d Cluster"
+        name: "Create default microshift Cluster"
         with:
           cluster-name: "test-cluster-1"

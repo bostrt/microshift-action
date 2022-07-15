@@ -15,7 +15,7 @@ usage(){
       deploy            deploy microshift cluster
   Environment variables:
       deploy
-                        CLUSTER_NAME (Required) k3d cluster name.
+                        CLUSTER_NAME (Required) microshift cluster name.
 EOF
 }
 
@@ -26,7 +26,28 @@ panic() {
 }
 
 deploy() {
-  echo "it works!"
+  sudo apt-get update
+  sudo apt-get install podman git -y
+
+  sudo podman run -d --rm --name microshift --privileged -v microshift-data:/var/lib -p 6443:6443 quay.io/microshift/microshift-aio:latest
+
+  sudo podman exec microshift bash -c \
+    'while ! test -f "/var/lib/microshift/resources/kubeadmin/kubeconfig";
+    do
+      echo "Waiting for kubeconfig..."
+      sleep 5
+    done'
+
+  mkdir ${HOME}/.kube
+  sudo podman cp microshift:/var/lib/microshift/resources/kubeadmin/kubeconfig ${HOME}/.kube/config
+  sudo chown ${USER} ${HOME}/.kube/config
+  chmod 600 ${HOME}/.kube/config
+  sleep 10
+
+  # Validate installation
+  git clone --depth=1 https://github.com/openshift/microshift.git
+  cd microshift/validate-microshift
+  ./kuttl-test.sh
 }
 
 #######################
